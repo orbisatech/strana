@@ -3,3 +3,4 @@ public/*.mov
 public/*.jpg
 public/*.png
 .next/
+node_modules/
