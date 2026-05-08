@@ -51,8 +51,20 @@ export default function Hero() {
         display: 'flex', alignItems: 'center', justifyContent: 'center',
       }}>
 
-        {/* Dark bg */}
-        <div style={{ position: 'absolute', inset: 0, background: '#080808' }} />
+        {/* Video bg */}
+<video
+  autoPlay muted loop playsInline
+  style={{
+    position: 'absolute', inset: 0,
+    width: '100%', height: '100%',
+    objectFit: 'cover',
+    opacity: 0.35,
+    zIndex: 1,
+  }}
+>
+  <source src="/bg-video.mp4" type="video/mp4" />
+</video>
+<div style={{ position: 'absolute', inset: 0, background: 'rgba(8,8,8,0.6)', zIndex: 1 }} />
 
         {/* Bottom gradient to blend into next section */}
         <div style={{
