@@ -5,13 +5,6 @@ import Image from 'next/image'
 // ✏️ Cambia esta contraseña
 const ADMIN_PASSWORD = 'strana2025'
 
-// Datos de ejemplo para mostrar el diseño
-const MOCK_DATA = [
-  { tarjeta: '0001', nombre: 'María González', fecha_nacimiento: '1995-03-15', telefono: '3310873767', timestamp: '2025-06-14T23:45:00Z' },
-  { tarjeta: '0002', nombre: 'Carlos Ramírez', fecha_nacimiento: '1998-07-22', telefono: '3312345678', timestamp: '2025-06-14T00:12:00Z' },
-  { tarjeta: '0003', nombre: 'Sofía Mendoza',  fecha_nacimiento: '2001-11-08', telefono: '3319876543', timestamp: '2025-06-15T01:30:00Z' },
-]
-
 export default function AdminPage() {
   const [auth, setAuth] = useState(false)
   const [pw, setPw] = useState('')
@@ -19,11 +12,17 @@ export default function AdminPage() {
   const [data, setData] = useState([])
   const [search, setSearch] = useState('')
 
-  const login = (e) => {
+  const login = async (e) => {
     e.preventDefault()
     if (pw === ADMIN_PASSWORD) {
       setAuth(true)
-      setData(MOCK_DATA) // Reemplazar con fetch real cuando tengas webhook
+      try {
+        const res = await fetch('/api/vip')
+        const json = await res.json()
+        setData(json.data || [])
+      } catch {
+        setData([])
+      }
     } else {
       setError(true)
       setTimeout(() => setError(false), 2000)
