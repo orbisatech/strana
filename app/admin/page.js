@@ -1,8 +1,7 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import Image from 'next/image'
 
-// ✏️ Cambia esta contraseña
 const ADMIN_PASSWORD = 'strana2025'
 
 export default function AdminPage() {
@@ -11,18 +10,25 @@ export default function AdminPage() {
   const [error, setError] = useState(false)
   const [data, setData] = useState([])
   const [search, setSearch] = useState('')
+  const [loading, setLoading] = useState(false)
+
+  const fetchData = async () => {
+    setLoading(true)
+    try {
+      const res = await fetch('/api/vip')
+      const json = await res.json()
+      setData(json.data || [])
+    } catch {
+      setData([])
+    }
+    setLoading(false)
+  }
 
   const login = async (e) => {
     e.preventDefault()
     if (pw === ADMIN_PASSWORD) {
       setAuth(true)
-      try {
-        const res = await fetch('/api/vip')
-        const json = await res.json()
-        setData(json.data || [])
-      } catch {
-        setData([])
-      }
+      fetchData()
     } else {
       setError(true)
       setTimeout(() => setError(false), 2000)
@@ -38,7 +44,6 @@ export default function AdminPage() {
   const formatDate = (iso) => new Date(iso).toLocaleString('es-MX', { dateStyle: 'short', timeStyle: 'short' })
   const formatBirth = (d) => d ? new Date(d + 'T12:00:00').toLocaleDateString('es-MX') : '—'
 
-  // ── LOGIN ──
   if (!auth) return (
     <div style={{ minHeight: '100vh', background: 'var(--black)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}>
       <style>{`
@@ -56,14 +61,13 @@ export default function AdminPage() {
           {error ? 'Contraseña incorrecta' : 'Ingresar'}
         </button>
       </form>
-      <a href="/" style={{ marginTop: '1.5rem', fontSize: '0.62rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--dim)', textDecoration: 'none', borderBottom: '1px solid var(--border)', paddingBottom: '2px', transition: 'color 0.3s' }}
+      <a href="/" style={{ marginTop: '1.5rem', fontSize: '0.62rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--dim)', textDecoration: 'none', borderBottom: '1px solid var(--border)', paddingBottom: '2px' }}
         onMouseEnter={e => e.target.style.color = 'var(--white)'}
         onMouseLeave={e => e.target.style.color = 'var(--dim)'}
       >← Volver al inicio</a>
     </div>
   )
 
-  // ── DASHBOARD ──
   return (
     <div style={{ minHeight: '100vh', background: 'var(--black)', padding: '2rem 1.5rem' }}>
       <style>{`
@@ -89,10 +93,15 @@ export default function AdminPage() {
             <h1 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: '1.8rem', letterSpacing: '0.05em' }}>Tarjetas VIP</h1>
           </div>
         </div>
-        <button onClick={() => setAuth(false)} style={{ background: 'none', border: '1px solid var(--border)', color: 'var(--dim)', padding: '0.6rem 1.2rem', fontSize: '0.65rem', letterSpacing: '0.15em', textTransform: 'uppercase', cursor: 'pointer', transition: 'color 0.3s' }}
-          onMouseEnter={e => e.currentTarget.style.color = 'var(--white)'}
-          onMouseLeave={e => e.currentTarget.style.color = 'var(--dim)'}
-        >Cerrar sesión</button>
+        <div style={{ display: 'flex', gap: '0.5rem' }}>
+          <button onClick={fetchData} disabled={loading} style={{ background: 'none', border: '1px solid var(--gold)', color: 'var(--gold)', padding: '0.6rem 1.2rem', fontSize: '0.65rem', letterSpacing: '0.15em', textTransform: 'uppercase', cursor: 'pointer' }}>
+            {loading ? 'Cargando...' : 'Actualizar'}
+          </button>
+          <button onClick={() => setAuth(false)} style={{ background: 'none', border: '1px solid var(--border)', color: 'var(--dim)', padding: '0.6rem 1.2rem', fontSize: '0.65rem', letterSpacing: '0.15em', textTransform: 'uppercase', cursor: 'pointer' }}
+            onMouseEnter={e => e.currentTarget.style.color = 'var(--white)'}
+            onMouseLeave={e => e.currentTarget.style.color = 'var(--dim)'}
+          >Cerrar sesión</button>
+        </div>
       </div>
 
       {/* Stats */}
