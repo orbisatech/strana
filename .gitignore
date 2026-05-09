@@ -1,3 +1,4 @@
 public/*.mov
 .next/
 node_modules/
+public/*.mp4
