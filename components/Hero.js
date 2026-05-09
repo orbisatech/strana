@@ -22,18 +22,16 @@ export default function Hero() {
   }, [])
 
   const vh = typeof window !== 'undefined' ? window.innerHeight : 800
-  const progress = Math.min(scrollY / (vh * 0.8), 1) // 0 → 1 while scrolling through hero
+  const progress = Math.min(scrollY / (vh * 0.8), 1)
 
-  // Logo fades out and scales down
   const logoOpacity = Math.max(1 - progress * 2, 0)
   const logoScale   = 1 - progress * 0.15
 
-  // Photos start centered/small and spread out + grow
-  const photoScale  = 0.55 + progress * 0.55          // 0.55 → 1.1
-  const leftX       = -18 - progress * 22              // moves left
-  const rightX      = 18 + progress * 22               // moves right
+  const photoScale  = 0.55 + progress * 0.55
+  const leftX       = -18 - progress * 22
+  const rightX      = 18 + progress * 22
   const photoOpacity = Math.min(0.3 + progress * 1.4, 1)
-  const centerY     = 15 - progress * 18               // rises up
+  const centerY     = 15 - progress * 18
 
   return (
     <section ref={sectionRef} style={{ position: 'relative', height: '200vh', background: '#080808' }}>
@@ -44,7 +42,6 @@ export default function Hero() {
         .logo-float { animation: floatY 4s ease-in-out infinite; }
       `}</style>
 
-      {/* Sticky container — stays in viewport while scrolling */}
       <div style={{
         position: 'sticky', top: 0,
         height: '100vh', overflow: 'hidden',
@@ -52,28 +49,28 @@ export default function Hero() {
       }}>
 
         {/* Video bg */}
-<video
-  autoPlay muted loop playsInline
-  style={{
-    position: 'absolute', inset: 0,
-    width: '100%', height: '100%',
-    objectFit: 'cover',
-    opacity: 0.35,
-    zIndex: 1,
-  }}
->
-  <source src="/bg-video.mp4" type="video/mp4" />
-</video>
-<div style={{ position: 'absolute', inset: 0, background: 'rgba(8,8,8,0.6)', zIndex: 1 }} />
+        <video
+          autoPlay muted loop playsInline
+          style={{
+            position: 'absolute', inset: 0,
+            width: '100%', height: '100%',
+            objectFit: 'cover',
+            opacity: 0.35,
+            zIndex: 1,
+          }}
+        >
+          <source src="/bg-video.mp4" type="video/mp4" />
+        </video>
+        <div style={{ position: 'absolute', inset: 0, background: 'rgba(8,8,8,0.6)', zIndex: 1 }} />
 
-        {/* Bottom gradient to blend into next section */}
+        {/* Bottom gradient */}
         <div style={{
           position: 'absolute', bottom: 0, left: 0, right: 0, height: '35%',
           background: 'linear-gradient(to bottom, transparent, #080808)',
           zIndex: 5, pointerEvents: 'none',
         }} />
 
-        {/* ── 3 FOTOS — centradas, crecen con scroll ── */}
+        {/* 3 FOTOS */}
         <div style={{
           position: 'absolute', inset: 0,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -95,7 +92,7 @@ export default function Hero() {
             <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(8,8,8,0.5) 0%, transparent 60%)' }} />
           </div>
 
-          {/* Centro — venue */}
+          {/* Centro */}
           <div style={{
             position: 'absolute',
             width: 'clamp(260px, 32vw, 460px)',
@@ -126,9 +123,29 @@ export default function Hero() {
             <img src="/people-02.jpg" alt="" style={{ width:'100%', height:'100%', objectFit:'cover', objectPosition:'top' }} />
             <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(8,8,8,0.5) 0%, transparent 60%)' }} />
           </div>
+
+          {/* Texto inmersivo — aparece con las fotos */}
+          <div style={{
+            position: 'absolute',
+            bottom: '12vh',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            textAlign: 'center',
+            zIndex: 10,
+            opacity: Math.min(progress * 2.5, 1),
+            pointerEvents: 'none',
+            whiteSpace: 'nowrap',
+          }}>
+            <p style={{ fontSize: '0.8rem', letterSpacing: '0.12em', color: 'var(--white)', marginBottom: '0.5rem', fontFamily: "'DM Sans', sans-serif" }}>
+              Get ready for the ultimate immersive experience.
+            </p>
+            <p style={{ fontSize: '0.6rem', letterSpacing: '0.35em', textTransform: 'uppercase', color: 'var(--gold)' }}>
+              May 2026
+            </p>
+          </div>
         </div>
 
-        {/* ── LOGO central — se desvanece al bajar ── */}
+        {/* LOGO */}
         <div style={{
           position: 'relative', zIndex: 10,
           opacity: phase === 'black' ? 0 : logoOpacity,
@@ -144,7 +161,7 @@ export default function Hero() {
               width={560}
               height={560}
               style={{
-                width: 'clamp(260px, 36vw, 520px)',
+                width: 'clamp(160px, 22vw, 320px)',
                 height: 'auto',
                 filter: 'drop-shadow(0 0 80px rgba(200,169,110,0.25)) drop-shadow(0 0 160px rgba(200,169,110,0.08))',
               }}
@@ -169,7 +186,6 @@ export default function Hero() {
               onMouseEnter={e => e.currentTarget.style.background = 'var(--gold)'}
               onMouseLeave={e => e.currentTarget.style.background = 'var(--white)'}
             >Ver Eventos</button>
-
           </div>
         </div>
 
