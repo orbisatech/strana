@@ -136,12 +136,12 @@ export default function Hero() {
             pointerEvents: 'none',
             whiteSpace: 'nowrap',
           }}>
-            <p style={{ fontSize: '0.8rem', letterSpacing: '0.12em', color: 'var(--white)', marginBottom: '0.5rem', fontFamily: "'DM Sans', sans-serif" }}>
-              Get ready for the ultimate immersive experience.
-            </p>
-            <p style={{ fontSize: '0.6rem', letterSpacing: '0.35em', textTransform: 'uppercase', color: 'var(--gold)' }}>
-              May 2026
-            </p>
+            <p style={{ fontSize: '1rem', letterSpacing: '0.12em', color: '#ffffff', marginBottom: '0.5rem', fontFamily: "'DM Sans', sans-serif", textShadow: '0 0 30px rgba(255,255,255,0.4)' }}>
+  Get ready for the ultimate immersive experience.
+</p>
+<p style={{ fontSize: '0.75rem', letterSpacing: '0.35em', textTransform: 'uppercase', color: 'var(--gold)', textShadow: '0 0 20px rgba(200,169,110,0.6)' }}>
+  May 2026
+</p>
           </div>
         </div>
 
