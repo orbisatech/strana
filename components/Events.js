@@ -42,7 +42,7 @@ export default function Events() {
           <div style={{ padding: '1.5rem 2.5rem', borderTop: '1px solid var(--border)', display: 'grid', gridTemplateColumns: '100px 1fr', gap: '1rem', alignItems: 'center' }}>
             <span style={{ fontSize: '0.65rem', letterSpacing: '0.1em', color: 'var(--gold)', fontWeight: 300 }}>12:00 AM</span>
             <div>
-              <p style={{ fontSize: '1rem', fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '0.06em', color: 'var(--white)', marginBottom: '0.2rem' }}>Beats by DJ Alego</p>
+              <p style={{ fontSize: '1rem', fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '0.06em', color: 'var(--white)', marginBottom: '0.2rem' }}>Beats by Resident DJ Alygor </p>
               <p style={{ fontSize: '0.6rem', color: 'var(--dim)', letterSpacing: '0.08em' }}>Open Format · Club</p>
             </div>
           </div>
@@ -51,7 +51,7 @@ export default function Events() {
           <p style={{ fontSize: '0.58rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'var(--gold)', marginBottom: '2rem' }}>Details</p>
           {[
             ['Date', 'To be confirmed · Grand Opening'],
-            ['Hours', '10:00 PM – 6:00 AM'],
+            ['Hours', '11:00 PM – 4:00 AM'],
             ['Dress Code', 'Formal / All Black'],
             ['Tickets', 'Presale coming soon'],
           ].map(([k, v]) => (

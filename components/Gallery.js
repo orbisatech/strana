@@ -4,7 +4,7 @@ export default function Gallery() {
   return (
     <section id="galeria" style={{ padding: '5rem 0', borderTop: '1px solid var(--border)', background: 'var(--black)' }}>
       <div style={{ padding: '0 1.5rem', marginBottom: '2rem', display: 'flex', alignItems: 'baseline', gap: '1rem' }}>
-        <h2 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: '3rem', letterSpacing: '0.06em', color: 'var(--white)' }}>El Universo</h2>
+        <h2 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: '3rem', letterSpacing: '0.06em', color: 'var(--white)' }}>The Universe</h2>
       </div>
 
       {/* Video inmersivo */}
@@ -38,7 +38,7 @@ export default function Gallery() {
             marginBottom: '1.5rem',
             textShadow: '0 0 40px rgba(255,255,255,0.2)',
           }}>
-            Un espacio donde la arquitectura, la tecnología y el arte convergen para crear experiencias únicas.
+            Coming soon
           </p>
           <span style={{
             fontSize: '0.65rem',
