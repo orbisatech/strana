@@ -11,7 +11,6 @@ export default function Hero() {
   const words = ['WELCOME', 'TO', 'STRANA']
 
   useEffect(() => {
-    // Secuencia: negro → palabras aparecen → logo
     const t1 = setTimeout(() => setWordIndex(0), 300)
     const t2 = setTimeout(() => setWordIndex(1), 900)
     const t3 = setTimeout(() => setWordIndex(2), 1500)
@@ -32,22 +31,12 @@ export default function Hero() {
   const logoOpacity = Math.max(1 - progress * 2, 0)
   const logoScale = 1 - progress * 0.1
 
-  const photoScale = 0.65 + progress * 0.45
-  const leftX = -22 - progress * 20
-  const rightX = 22 + progress * 20
-  const photoOpacity = Math.min(0.5 + progress * 0.8, 1)
-  const centerY = 10 - progress * 15
-
   const welcomeOpacity = phase === 'logo-in' || phase === 'done' ? 0 : 1
   const welcomeTransform = phase === 'logo-in' || phase === 'done' ? 'translateY(-20px)' : 'translateY(0)'
 
   return (
     <section ref={sectionRef} style={{ position: 'relative', height: '200vh', background: '#080808' }}>
       <style>{`
-        @keyframes wordIn {
-          from { opacity: 0; transform: translateY(40px) skewY(2deg); }
-          to   { opacity: 1; transform: translateY(0)   skewY(0deg); }
-        }
         @keyframes logoIn {
           from { opacity: 0; transform: scale(0.9) translateY(20px); }
           to   { opacity: 1; transform: scale(1)   translateY(0); }
@@ -83,7 +72,7 @@ export default function Hero() {
           zIndex: 5, pointerEvents: 'none',
         }} />
 
-        {/* WELCOME TO STRANA — palabra por palabra */}
+        {/* WELCOME TO STRANA */}
         <div style={{
           position: 'absolute', inset: 0,
           display: 'flex', flexDirection: 'column',
@@ -95,10 +84,7 @@ export default function Hero() {
           pointerEvents: 'none',
         }}>
           {words.map((word, i) => (
-            <div key={word} style={{
-              overflow: 'hidden',
-              lineHeight: 0.9,
-            }}>
+            <div key={word} style={{ overflow: 'hidden', lineHeight: 0.9 }}>
               <span style={{
                 display: 'block',
                 fontFamily: "'Bebas Neue', sans-serif",
@@ -127,86 +113,31 @@ export default function Hero() {
           </p>
         </div>
 
-        {/* 3 FOTOS */}
+        {/* Texto inmersivo */}
         <div style={{
-          position: 'absolute', inset: 0,
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          zIndex: 2,
-          opacity: phase === 'done' ? 1 : 0,
-          transition: 'opacity 0.8s ease',
+          position: 'absolute',
+          bottom: '10vh',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          textAlign: 'center',
+          zIndex: 10,
+          opacity: phase === 'done' ? Math.min(progress * 2.5, 1) : 0,
+          pointerEvents: 'none',
+          whiteSpace: 'nowrap',
         }}>
-          {/* Izquierda */}
-          <div style={{
-            position: 'absolute',
-            width: 'clamp(120px, 22vw, 300px)',
-            aspectRatio: '2/3',
-            transform: `translateX(${leftX}vw) translateY(${centerY}px) scale(${photoScale})`,
-            opacity: photoOpacity,
-            transition: 'none',
-            overflow: 'hidden',
-            boxShadow: '0 30px 80px rgba(0,0,0,0.8)',
-          }}>
-            <img src="/people-01.jpg" alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top', filter: 'brightness(0.9) contrast(1.05)' }} />
-            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(8,8,8,0.6) 0%, transparent 50%)' }} />
-          </div>
-
-          {/* Centro */}
-          <div style={{
-            position: 'absolute',
-            width: 'clamp(200px, 35vw, 500px)',
-            aspectRatio: '16/10',
-            transform: `translateY(${30 - progress * 35}vh) scale(${0.45 + progress * 0.65})`,
-            opacity: Math.min(progress * 2, 1),
-            transition: 'none',
-            overflow: 'hidden',
-            boxShadow: '0 40px 100px rgba(0,0,0,0.9)',
-          }}>
-            <img src="/venue-13.jpg" alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center', filter: 'brightness(0.95) contrast(1.1) saturate(1.1)' }} />
-            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(8,8,8,0.5) 0%, transparent 50%)' }} />
-          </div>
-
-          {/* Derecha */}
-          <div style={{
-            position: 'absolute',
-            width: 'clamp(120px, 22vw, 300px)',
-            aspectRatio: '2/3',
-            transform: `translateX(${rightX}vw) translateY(${centerY}px) scale(${photoScale})`,
-            opacity: photoOpacity,
-            transition: 'none',
-            overflow: 'hidden',
-            boxShadow: '0 30px 80px rgba(0,0,0,0.8)',
-          }}>
-            <img src="/people-02.jpg" alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top', filter: 'brightness(0.9) contrast(1.05)' }} />
-            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(8,8,8,0.6) 0%, transparent 50%)' }} />
-          </div>
-
-          {/* Texto inmersivo */}
-          <div style={{
-            position: 'absolute',
-            bottom: '10vh',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            textAlign: 'center',
-            zIndex: 10,
-            opacity: Math.min(progress * 2.5, 1),
-            pointerEvents: 'none',
-            whiteSpace: 'nowrap',
-          }}>
-            <p style={{ fontSize: '1rem', letterSpacing: '0.12em', color: '#ffffff', marginBottom: '0.5rem', fontFamily: "'DM Sans', sans-serif", textShadow: '0 0 30px rgba(255,255,255,0.4)' }}>
-              Get ready for the ultimate immersive experience.
-            </p>
-            <p style={{ fontSize: '0.75rem', letterSpacing: '0.35em', textTransform: 'uppercase', color: 'var(--gold)', textShadow: '0 0 20px rgba(200,169,110,0.6)' }}>
-              May 2026
-            </p>
-          </div>
+          <p style={{ fontSize: '1rem', letterSpacing: '0.12em', color: '#ffffff', marginBottom: '0.5rem', fontFamily: "'DM Sans', sans-serif", textShadow: '0 0 30px rgba(255,255,255,0.4)' }}>
+            Get ready for the ultimate immersive experience.
+          </p>
+          <p style={{ fontSize: '0.75rem', letterSpacing: '0.35em', textTransform: 'uppercase', color: 'var(--gold)', textShadow: '0 0 20px rgba(200,169,110,0.6)' }}>
+            May 2026
+          </p>
         </div>
 
-        {/* LOGO — aparece después del texto */}
+        {/* LOGO */}
         <div style={{
           position: 'relative', zIndex: 10,
-          opacity: phase === 'black' || phase === 'black' ? 0 : logoOpacity,
+          opacity: phase === 'logo-in' || phase === 'done' ? logoOpacity : 0,
           transform: `scale(${logoScale})`,
-          transition: 'none',
           display: phase === 'logo-in' || phase === 'done' ? 'flex' : 'none',
           flexDirection: 'column', alignItems: 'center',
           pointerEvents: logoOpacity < 0.1 ? 'none' : 'all',
