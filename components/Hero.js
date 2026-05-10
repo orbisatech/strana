@@ -6,11 +6,18 @@ export default function Hero() {
   const sectionRef = useRef(null)
   const [scrollY, setScrollY] = useState(0)
   const [phase, setPhase] = useState('black')
+  const [wordIndex, setWordIndex] = useState(-1)
+
+  const words = ['WELCOME', 'TO', 'STRANA']
 
   useEffect(() => {
-    const t1 = setTimeout(() => setPhase('logo-in'), 200)
-    const t2 = setTimeout(() => setPhase('done'), 1400)
-    return () => [t1, t2].forEach(clearTimeout)
+    // Secuencia: negro → palabras aparecen → logo
+    const t1 = setTimeout(() => setWordIndex(0), 300)
+    const t2 = setTimeout(() => setWordIndex(1), 900)
+    const t3 = setTimeout(() => setWordIndex(2), 1500)
+    const t4 = setTimeout(() => setPhase('logo-in'), 2400)
+    const t5 = setTimeout(() => setPhase('done'), 3600)
+    return () => [t1, t2, t3, t4, t5].forEach(clearTimeout)
   }, [])
 
   useEffect(() => {
@@ -31,16 +38,26 @@ export default function Hero() {
   const photoOpacity = Math.min(0.5 + progress * 0.8, 1)
   const centerY = 10 - progress * 15
 
+  const welcomeOpacity = phase === 'logo-in' || phase === 'done' ? 0 : 1
+  const welcomeTransform = phase === 'logo-in' || phase === 'done' ? 'translateY(-20px)' : 'translateY(0)'
+
   return (
     <section ref={sectionRef} style={{ position: 'relative', height: '200vh', background: '#080808' }}>
       <style>{`
-        @keyframes logoIn { from{opacity:0;transform:scale(0.6) translateY(20px)} to{opacity:1;transform:scale(1) translateY(0)} }
-        @keyframes floatY { 0%,100%{transform:translateY(0px)} 50%{transform:translateY(-10px)} }
-        @keyframes fadeUp { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
+        @keyframes wordIn {
+          from { opacity: 0; transform: translateY(40px) skewY(2deg); }
+          to   { opacity: 1; transform: translateY(0)   skewY(0deg); }
+        }
+        @keyframes logoIn {
+          from { opacity: 0; transform: scale(0.9) translateY(20px); }
+          to   { opacity: 1; transform: scale(1)   translateY(0); }
+        }
+        @keyframes floatY {
+          0%,100% { transform: translateY(0px); }
+          50%      { transform: translateY(-8px); }
+        }
         .logo-float { animation: floatY 5s ease-in-out infinite; }
-        .welcome-text { animation: fadeUp 1.2s cubic-bezier(0.16,1,0.3,1) 0.3s both; }
-        .sub-text { animation: fadeUp 1.2s cubic-bezier(0.16,1,0.3,1) 0.6s both; }
-        .btn-anim { animation: fadeUp 1.2s cubic-bezier(0.16,1,0.3,1) 0.9s both; }
+        .logo-enter { animation: logoIn 1s cubic-bezier(0.16,1,0.3,1) both; }
       `}</style>
 
       <div style={{
@@ -66,11 +83,57 @@ export default function Hero() {
           zIndex: 5, pointerEvents: 'none',
         }} />
 
-        {/* 3 FOTOS — más nítidas */}
+        {/* WELCOME TO STRANA — palabra por palabra */}
+        <div style={{
+          position: 'absolute', inset: 0,
+          display: 'flex', flexDirection: 'column',
+          alignItems: 'center', justifyContent: 'center',
+          zIndex: 10,
+          opacity: welcomeOpacity,
+          transform: welcomeTransform,
+          transition: 'opacity 0.8s ease, transform 0.8s ease',
+          pointerEvents: 'none',
+        }}>
+          {words.map((word, i) => (
+            <div key={word} style={{
+              overflow: 'hidden',
+              lineHeight: 0.9,
+            }}>
+              <span style={{
+                display: 'block',
+                fontFamily: "'Bebas Neue', sans-serif",
+                fontSize: 'clamp(3.5rem, 14vw, 11rem)',
+                letterSpacing: '0.02em',
+                color: '#ffffff',
+                opacity: wordIndex >= i ? 1 : 0,
+                transform: wordIndex >= i ? 'translateY(0)' : 'translateY(100%)',
+                transition: 'opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1)',
+              }}>
+                {word}
+              </span>
+            </div>
+          ))}
+          <p style={{
+            fontSize: '0.65rem',
+            letterSpacing: '0.4em',
+            textTransform: 'uppercase',
+            color: 'var(--gold)',
+            marginTop: '1.5rem',
+            opacity: wordIndex >= 2 ? 1 : 0,
+            transform: wordIndex >= 2 ? 'translateY(0)' : 'translateY(10px)',
+            transition: 'opacity 0.8s ease 0.3s, transform 0.8s ease 0.3s',
+          }}>
+            Guadalajara · México · Opening 2026
+          </p>
+        </div>
+
+        {/* 3 FOTOS */}
         <div style={{
           position: 'absolute', inset: 0,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           zIndex: 2,
+          opacity: phase === 'done' ? 1 : 0,
+          transition: 'opacity 0.8s ease',
         }}>
           {/* Izquierda */}
           <div style={{
@@ -117,7 +180,7 @@ export default function Hero() {
             <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(8,8,8,0.6) 0%, transparent 50%)' }} />
           </div>
 
-          {/* Texto inmersivo — aparece con scroll */}
+          {/* Texto inmersivo */}
           <div style={{
             position: 'absolute',
             bottom: '10vh',
@@ -138,37 +201,24 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* LOGO + Welcome to STRANA */}
+        {/* LOGO — aparece después del texto */}
         <div style={{
           position: 'relative', zIndex: 10,
-          opacity: phase === 'black' ? 0 : logoOpacity,
+          opacity: phase === 'black' || phase === 'black' ? 0 : logoOpacity,
           transform: `scale(${logoScale})`,
-          transition: phase === 'logo-in' ? 'opacity 1.2s ease, transform 1.2s cubic-bezier(0.16,1,0.3,1)' : 'none',
-          display: 'flex', flexDirection: 'column', alignItems: 'center',
+          transition: 'none',
+          display: phase === 'logo-in' || phase === 'done' ? 'flex' : 'none',
+          flexDirection: 'column', alignItems: 'center',
           pointerEvents: logoOpacity < 0.1 ? 'none' : 'all',
         }}>
-          {/* Welcome to */}
-          {phase === 'done' && (
-            <p className="welcome-text" style={{
-              fontSize: 'clamp(0.6rem, 1.5vw, 0.8rem)',
-              letterSpacing: '0.45em',
-              textTransform: 'uppercase',
-              color: 'var(--dim)',
-              marginBottom: '1.2rem',
-              fontFamily: "'DM Sans', sans-serif",
-            }}>
-              Welcome to
-            </p>
-          )}
-
-          <div className={phase === 'done' && progress < 0.1 ? 'logo-float' : ''}>
+          <div className={`logo-enter ${phase === 'done' && progress < 0.1 ? 'logo-float' : ''}`}>
             <Image
               src="/logo.png"
               alt="STRANA"
-              width={560}
-              height={560}
+              width={400}
+              height={400}
               style={{
-                width: 'clamp(200px, 28vw, 400px)',
+                width: 'clamp(140px, 18vw, 260px)',
                 height: 'auto',
                 filter: 'drop-shadow(0 0 60px rgba(200,169,110,0.3)) drop-shadow(0 0 120px rgba(200,169,110,0.1))',
               }}
@@ -176,7 +226,7 @@ export default function Hero() {
             />
           </div>
 
-          <p className="sub-text" style={{
+          <p style={{
             fontSize: 'clamp(0.5rem, 1vw, 0.65rem)',
             letterSpacing: '0.4em',
             textTransform: 'uppercase',
@@ -188,7 +238,7 @@ export default function Hero() {
             Guadalajara, México · Opening 2026
           </p>
 
-          <div className="btn-anim" style={{
+          <div style={{
             display: 'flex', gap: '1rem', flexWrap: 'wrap', justifyContent: 'center',
             opacity: Math.max(1 - progress * 3, 0),
           }}>
