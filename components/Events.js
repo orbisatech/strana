@@ -52,7 +52,7 @@ export default function Events() {
 
       <div style={{ padding: '4rem 2.5rem 2rem', display: 'flex', alignItems: 'baseline', gap: '1rem' }}>
         <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 'clamp(2rem, 4vw, 3rem)', letterSpacing: '0.06em', color: 'var(--white)' }}>Upcoming Events</h2>
-        <span style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: '1.5rem', color: 'var(--gold)' }}>01</span>
+        <span style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: '1.5rem', color: 'var(--gold)' }}></span>
       </div>
 
       {/* Carrusel */}
