@@ -51,8 +51,8 @@ export default function Hero() {
         .logo-float { animation: floatY 5s ease-in-out infinite; }
         .logo-enter { animation: logoIn 1s cubic-bezier(0.16,1,0.3,1) both; }
         @media (max-width: 768px) {
-          .immersive-text { font-size: 0.7rem !important; }
-          .immersive-date { font-size: 0.55rem !important; }
+          .immersive-text { font-size: 0.55rem !important; }
+          .immersive-date { font-size: 0.42rem !important; }
         }
       `}</style>
 
