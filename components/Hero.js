@@ -7,16 +7,19 @@ export default function Hero() {
   const [scrollY, setScrollY] = useState(0)
   const [phase, setPhase] = useState('black')
   const [wordIndex, setWordIndex] = useState(-1)
+  const [videoOpacity, setVideoOpacity] = useState(0)
 
   const words = ['WELCOME', 'TO', 'STRANA']
 
   useEffect(() => {
-    const t1 = setTimeout(() => setWordIndex(0), 300)
-    const t2 = setTimeout(() => setWordIndex(1), 900)
-    const t3 = setTimeout(() => setWordIndex(2), 1500)
-    const t4 = setTimeout(() => setPhase('logo-in'), 2400)
-    const t5 = setTimeout(() => setPhase('done'), 3600)
-    return () => [t1, t2, t3, t4, t5].forEach(clearTimeout)
+    const t1 = setTimeout(() => setWordIndex(0), 400)
+    const t2 = setTimeout(() => setWordIndex(1), 1100)
+    const t3 = setTimeout(() => setWordIndex(2), 1800)
+    // Video empieza a aparecer cuando sale STRANA
+    const t4 = setTimeout(() => setVideoOpacity(0.35), 2000)
+    const t5 = setTimeout(() => setPhase('logo-in'), 2800)
+    const t6 = setTimeout(() => setPhase('done'), 4000)
+    return () => [t1, t2, t3, t4, t5, t6].forEach(clearTimeout)
   }, [])
 
   useEffect(() => {
@@ -32,14 +35,14 @@ export default function Hero() {
   const logoScale = 1 - progress * 0.1
 
   const welcomeOpacity = phase === 'logo-in' || phase === 'done' ? 0 : 1
-  const welcomeTransform = phase === 'logo-in' || phase === 'done' ? 'translateY(-20px)' : 'translateY(0)'
+  const welcomeTransform = phase === 'logo-in' || phase === 'done' ? 'translateY(-30px)' : 'translateY(0)'
 
   return (
     <section ref={sectionRef} style={{ position: 'relative', height: '200vh', background: '#080808' }}>
       <style>{`
         @keyframes logoIn {
-          from { opacity: 0; transform: scale(0.9) translateY(20px); }
-          to   { opacity: 1; transform: scale(1)   translateY(0); }
+          from { opacity: 0; transform: scale(0.92) translateY(16px); }
+          to   { opacity: 1; transform: scale(1) translateY(0); }
         }
         @keyframes floatY {
           0%,100% { transform: translateY(0px); }
@@ -47,23 +50,37 @@ export default function Hero() {
         }
         .logo-float { animation: floatY 5s ease-in-out infinite; }
         .logo-enter { animation: logoIn 1s cubic-bezier(0.16,1,0.3,1) both; }
+        @media (max-width: 768px) {
+          .immersive-text { font-size: 0.7rem !important; }
+          .immersive-date { font-size: 0.55rem !important; }
+        }
       `}</style>
 
       <div style={{
         position: 'sticky', top: 0,
         height: '100vh', overflow: 'hidden',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
+        background: '#080808',
       }}>
 
-        {/* Video bg */}
+        {/* Video bg — empieza en 0 y sube gradualmente */}
         <video autoPlay muted loop playsInline style={{
           position: 'absolute', inset: 0,
           width: '100%', height: '100%',
-          objectFit: 'cover', opacity: 0.4, zIndex: 1,
+          objectFit: 'cover',
+          opacity: videoOpacity,
+          zIndex: 1,
+          transition: 'opacity 1.5s ease',
         }}>
           <source src="/bg-video.mp4" type="video/mp4" />
         </video>
-        <div style={{ position: 'absolute', inset: 0, background: 'rgba(8,8,8,0.55)', zIndex: 1 }} />
+        <div style={{
+          position: 'absolute', inset: 0,
+          background: 'rgba(8,8,8,0.55)',
+          zIndex: 1,
+          opacity: videoOpacity > 0 ? 1 : 0,
+          transition: 'opacity 1.5s ease',
+        }} />
 
         {/* Bottom gradient */}
         <div style={{
@@ -80,11 +97,11 @@ export default function Hero() {
           zIndex: 10,
           opacity: welcomeOpacity,
           transform: welcomeTransform,
-          transition: 'opacity 0.8s ease, transform 0.8s ease',
+          transition: 'opacity 0.9s ease, transform 0.9s ease',
           pointerEvents: 'none',
         }}>
           {words.map((word, i) => (
-            <div key={word} style={{ overflow: 'hidden', lineHeight: 0.9 }}>
+            <div key={word} style={{ overflow: 'hidden', lineHeight: 0.88 }}>
               <span style={{
                 display: 'block',
                 fontFamily: "'Bebas Neue', sans-serif",
@@ -93,7 +110,7 @@ export default function Hero() {
                 color: '#ffffff',
                 opacity: wordIndex >= i ? 1 : 0,
                 transform: wordIndex >= i ? 'translateY(0)' : 'translateY(100%)',
-                transition: 'opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1)',
+                transition: 'opacity 0.65s cubic-bezier(0.16,1,0.3,1), transform 0.65s cubic-bezier(0.16,1,0.3,1)',
               }}>
                 {word}
               </span>
@@ -113,7 +130,7 @@ export default function Hero() {
           </p>
         </div>
 
-        {/* Texto inmersivo */}
+        {/* Texto inmersivo — solo visible al hacer scroll */}
         <div style={{
           position: 'absolute',
           bottom: '10vh',
@@ -125,10 +142,10 @@ export default function Hero() {
           pointerEvents: 'none',
           whiteSpace: 'nowrap',
         }}>
-          <p style={{ fontSize: '1rem', letterSpacing: '0.12em', color: '#ffffff', marginBottom: '0.5rem', fontFamily: "'DM Sans', sans-serif", textShadow: '0 0 30px rgba(255,255,255,0.4)' }}>
+          <p className="immersive-text" style={{ fontSize: '1rem', letterSpacing: '0.12em', color: '#ffffff', marginBottom: '0.5rem', fontFamily: "'DM Sans', sans-serif", textShadow: '0 0 30px rgba(255,255,255,0.4)' }}>
             Get ready for the ultimate immersive experience.
           </p>
-          <p style={{ fontSize: '0.75rem', letterSpacing: '0.35em', textTransform: 'uppercase', color: 'var(--gold)', textShadow: '0 0 20px rgba(200,169,110,0.6)' }}>
+          <p className="immersive-date" style={{ fontSize: '0.75rem', letterSpacing: '0.35em', textTransform: 'uppercase', color: 'var(--gold)', textShadow: '0 0 20px rgba(200,169,110,0.6)' }}>
             May 2026
           </p>
         </div>
