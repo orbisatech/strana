@@ -135,7 +135,6 @@ export default function Events() {
             ['Date', 'To be confirmed · Grand Opening'],
             ['Hours', '11:00 PM – 4:00 AM'],
             ['Dress Code', 'Formal / All Black'],
-            ['Tickets', 'Presale coming soon'],
           ].map(([k, v]) => (
             <div key={k} style={{ marginBottom: '1.8rem', paddingBottom: '1.8rem', borderBottom: '1px solid var(--border)' }}>
               <p style={{ fontSize: '0.58rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--dim)', marginBottom: '0.4rem' }}>{k}</p>
