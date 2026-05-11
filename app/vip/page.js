@@ -7,7 +7,7 @@ function VIPForm() {
   const searchParams = useSearchParams()
   const cardId = searchParams.get('card') || '001'
 
-  const [form, setForm] = useState({ username: '', nombre: '', telefono: '', fecha: '' })
+  const [form, setForm] = useState({ cardNumber: '', nombre: '', telefono: '', fecha: '' })
   const [status, setStatus] = useState('idle')
 
   const handleSubmit = async (e) => {
@@ -28,7 +28,7 @@ function VIPForm() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           tarjeta: cardId,
-          username: form.username,
+          card_number: form.cardNumber,
           nombre: form.nombre,
           telefono: form.telefono,
           fecha_nacimiento: form.fecha,
@@ -99,6 +99,12 @@ function VIPForm() {
         }
         .vip-submit:hover { opacity: 0.88; }
         .vip-submit:disabled { opacity: 0.4; cursor: not-allowed; }
+        .field-hint {
+          font-size: 0.6rem;
+          color: rgba(200,169,110,0.5);
+          letter-spacing: 0.08em;
+          margin-top: 0.4rem;
+        }
       `}</style>
 
       {/* Logo */}
@@ -117,10 +123,7 @@ function VIPForm() {
         position: 'relative',
         overflow: 'hidden',
       }}>
-        {/* Shine effect */}
         <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '1px', background: 'linear-gradient(to right, transparent, rgba(200,169,110,0.4), transparent)' }} />
-        
-        {/* Card header */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '2rem' }}>
           <div>
             <p style={{ fontSize: '0.5rem', letterSpacing: '0.35em', textTransform: 'uppercase', color: 'rgba(200,169,110,0.6)', marginBottom: '0.3rem' }}>VIP Access</p>
@@ -131,15 +134,12 @@ function VIPForm() {
             <p style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: '1.1rem', letterSpacing: '0.15em', color: '#C8A96E' }}>#{cardId}</p>
           </div>
         </div>
-
-        {/* NFC chip visual */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', marginBottom: '1.5rem' }}>
           <div style={{ width: '38px', height: '28px', border: '1px solid rgba(200,169,110,0.4)', borderRadius: '4px', background: 'rgba(200,169,110,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <span style={{ fontSize: '0.45rem', letterSpacing: '0.1em', color: 'rgba(200,169,110,0.7)' }}>NFC</span>
           </div>
           <div style={{ flex: 1, height: '1px', background: 'linear-gradient(to right, rgba(200,169,110,0.2), transparent)' }} />
         </div>
-
         <p style={{ fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(240,237,230,0.25)' }}>Guadalajara · México · 2026</p>
       </div>
 
@@ -150,16 +150,26 @@ function VIPForm() {
         </p>
 
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-          <input className="vip-input" type="text" placeholder="Username" required
-            value={form.username} onChange={e => setForm(f => ({ ...f, username: e.target.value }))} />
+          <div>
+            <input className="vip-input" type="text" placeholder="Card Number" required
+              value={form.cardNumber} onChange={e => setForm(f => ({ ...f, cardNumber: e.target.value }))} />
+            <p className="field-hint">Enter the number printed on your VIP card</p>
+          </div>
+
           <input className="vip-input" type="text" placeholder="Full Name" required
             value={form.nombre} onChange={e => setForm(f => ({ ...f, nombre: e.target.value }))} />
+
           <input className="vip-input" type="tel" placeholder="Phone Number (10 digits)" required
             pattern="[0-9]{10}" maxLength={10}
             value={form.telefono} onChange={e => setForm(f => ({ ...f, telefono: e.target.value }))} />
-          <input className="vip-input" type="date" required
-            value={form.fecha} onChange={e => setForm(f => ({ ...f, fecha: e.target.value }))}
-            style={{ colorScheme: 'dark' }} />
+
+          <div>
+            <input className="vip-input" type="date" required
+              value={form.fecha} onChange={e => setForm(f => ({ ...f, fecha: e.target.value }))}
+              style={{ colorScheme: 'dark' }} />
+            <p className="field-hint">Your date of birth — used to celebrate you on your special day 🎂</p>
+          </div>
+
           <button className="vip-submit" type="submit" disabled={status === 'loading'}>
             {status === 'loading' ? 'Registering...' : 'Activate VIP Card'}
           </button>
