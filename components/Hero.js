@@ -46,15 +46,19 @@ export default function Hero() {
   const [scrambleTrigger, setScrambleTrigger] = useState(false)
 
   useEffect(() => {
+    // t1: "WELCOME TO" entra
     const t1 = setTimeout(() => setWordIndex(0), 400)
-    const t2 = setTimeout(() => {
-      setShowLogo(true)
-      setVideoOpacity(0.45)
-    }, 1600)
-    const t3 = setTimeout(() => setHidWelcome(true), 2800)
-    const t4 = setTimeout(() => setScrambleTrigger(true), 3200)
-    const t5 = setTimeout(() => setPhase('done'), 3800)
-    return () => [t1, t2, t3, t4, t5].forEach(clearTimeout)
+    // t2: video sube de opacidad mientras "WELCOME TO" aún está
+    const t2 = setTimeout(() => setVideoOpacity(0.45), 1200)
+    // t3: "WELCOME TO" empieza a desaparecer
+    const t3 = setTimeout(() => setHidWelcome(true), 2400)
+    // t4: logo aparece DESPUÉS de que "WELCOME TO" terminó de irse (~700ms de transición)
+    const t4 = setTimeout(() => setShowLogo(true), 3100)
+    // t5: scramble arranca una vez que el logo está visible
+    const t5 = setTimeout(() => setScrambleTrigger(true), 3600)
+    // t6: fase done
+    const t6 = setTimeout(() => setPhase('done'), 4200)
+    return () => [t1, t2, t3, t4, t5, t6].forEach(clearTimeout)
   }, [])
 
   useEffect(() => {
@@ -228,9 +232,10 @@ export default function Hero() {
         }
         @media (max-width: 768px) {
           .coords-panel, .badge-panel, .event-corner { display: none !important; }
-          .immersive-text { font-size: 0.82rem !important; }
+          .immersive-text { font-size: 1rem !important; white-space: normal !important; padding: 0 24px; }
           .immersive-date { font-size: 0.55rem !important; }
-          .welcome-line { font-size: clamp(2.4rem, 11vw, 5rem) !important; }
+          .welcome-line { font-size: clamp(2.8rem, 13vw, 5rem) !important; }
+          .logo-float { animation: floatY 5.5s ease-in-out infinite; }
         }
       `}</style>
 
@@ -309,21 +314,22 @@ export default function Hero() {
         <div style={{
           position: 'absolute',
           top: '50%', left: '50%',
-          transform: `translate(-50%, calc(-50% - ${showLogo ? 'clamp(110px, 16vw, 190px)' : '0px'}))`,
+          transform: 'translate(-50%, -50%)',
           zIndex: 20,
           textAlign: 'center',
           opacity: wordIndex >= 0 && !hidWelcome ? 1 : 0,
           transition: hidWelcome
             ? 'opacity 0.7s ease'
             : wordIndex >= 0
-            ? 'opacity 0.7s ease, transform 0.9s cubic-bezier(0.16,1,0.3,1)'
+            ? 'opacity 0.7s ease'
             : 'none',
           pointerEvents: 'none',
-          whiteSpace: 'nowrap',
+          width: '100%',
+          padding: '0 24px',
         }}>
           <p className="welcome-line" style={{
             fontFamily: "'Bebas Neue', sans-serif",
-            fontSize: 'clamp(2.6rem, 8vw, 6.5rem)',
+            fontSize: 'clamp(2.8rem, 10vw, 6.5rem)',
             letterSpacing: '0.06em',
             color: 'rgba(240,237,232,0.9)',
             lineHeight: 1,
@@ -392,14 +398,16 @@ export default function Hero() {
 
             {/* Scramble text */}
             <p style={{
-              fontSize: 'clamp(0.5rem, 0.9vw, 0.62rem)',
-              letterSpacing: '0.42em',
+              fontSize: 'clamp(0.55rem, 1.8vw, 0.62rem)',
+              letterSpacing: '0.32em',
               textTransform: 'uppercase',
               color: 'rgba(240,237,232,0.45)',
-              marginTop: '1.4rem',
-              marginBottom: '2.6rem',
+              marginTop: '1.2rem',
+              marginBottom: '1.8rem',
               opacity: Math.max(1 - progress * 3, 0),
               fontFamily: "'Space Mono', monospace",
+              textAlign: 'center',
+              padding: '0 16px',
             }}>
               <ScrambleText
                 text="GUADALAJARA · MÉXICO · OPENING 2026"
