@@ -445,7 +445,7 @@ export default function Hero() {
                   e.currentTarget.style.boxShadow = '0 0 0px rgba(200,255,0,0)'
                 }}
               >
-                Ver Eventos
+                Events
               </button>
             </div>
           </div>
