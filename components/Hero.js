@@ -6,19 +6,18 @@ const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789·'
 
 function ScrambleText({ text, trigger, delay = 0 }) {
   const [display, setDisplay] = useState('')
-  const [done, setDone] = useState(false)
 
   useEffect(() => {
     if (!trigger) return
     let timeout = setTimeout(() => {
       const chars = text.split('')
       let iteration = 0
-      const total = chars.length * 3
+      const total = chars.length * 4
       const interval = setInterval(() => {
         setDisplay(
           chars.map((char, i) => {
             if (char === ' ') return ' '
-            if (iteration >= (i + 1) * 3) return char
+            if (iteration >= (i + 1) * 4) return char
             return CHARS[Math.floor(Math.random() * CHARS.length)]
           }).join('')
         )
@@ -26,9 +25,8 @@ function ScrambleText({ text, trigger, delay = 0 }) {
         if (iteration >= total) {
           clearInterval(interval)
           setDisplay(text)
-          setDone(true)
         }
-      }, 40)
+      }, 70)
       return () => clearInterval(interval)
     }, delay)
     return () => clearTimeout(timeout)
@@ -41,26 +39,23 @@ export default function Hero() {
   const sectionRef = useRef(null)
   const [scrollY, setScrollY] = useState(0)
   const [phase, setPhase] = useState('black')
-  const [showWelcome, setShowWelcome] = useState(false)
+  const [wordIndex, setWordIndex] = useState(-1)
   const [showLogo, setShowLogo] = useState(false)
   const [hidWelcome, setHidWelcome] = useState(false)
   const [videoOpacity, setVideoOpacity] = useState(0)
   const [scrambleTrigger, setScrambleTrigger] = useState(false)
 
+  const words = ['WELCOME TO']
+
   useEffect(() => {
-    // 0.4s — aparece "WELCOME TO"
-    const t1 = setTimeout(() => setShowWelcome(true), 400)
-    // 1.4s — aparece logo + video
+    const t1 = setTimeout(() => setWordIndex(0), 400)
     const t2 = setTimeout(() => {
       setShowLogo(true)
       setVideoOpacity(0.38)
-    }, 1400)
-    // 2.4s — desaparece "WELCOME TO"
-    const t3 = setTimeout(() => setHidWelcome(true), 2400)
-    // 2.8s — scramble del texto dorado
-    const t4 = setTimeout(() => setScrambleTrigger(true), 2800)
-    // 3.2s — fase done
-    const t5 = setTimeout(() => setPhase('done'), 3200)
+    }, 1600)
+    const t3 = setTimeout(() => setHidWelcome(true), 2800)
+    const t4 = setTimeout(() => setScrambleTrigger(true), 3200)
+    const t5 = setTimeout(() => setPhase('done'), 3800)
     return () => [t1, t2, t3, t4, t5].forEach(clearTimeout)
   }, [])
 
@@ -79,7 +74,7 @@ export default function Hero() {
     <section ref={sectionRef} style={{ position: 'relative', height: '200vh', background: '#080808' }}>
       <style>{`
         @keyframes welcomeIn {
-          from { opacity: 0; transform: translateY(30px); }
+          from { opacity: 0; transform: translateY(40px); }
           to   { opacity: 1; transform: translateY(0); }
         }
         @keyframes logoIn {
@@ -94,7 +89,7 @@ export default function Hero() {
         @media (max-width: 768px) {
           .immersive-text { font-size: 0.55rem !important; }
           .immersive-date { font-size: 0.42rem !important; }
-          .welcome-line { font-size: clamp(2.5rem, 10vw, 5rem) !important; }
+          .welcome-line { font-size: clamp(2.2rem, 9vw, 4rem) !important; }
         }
       `}</style>
 
@@ -131,32 +126,36 @@ export default function Hero() {
           zIndex: 5, pointerEvents: 'none',
         }} />
 
-        {/* WELCOME TO — una sola línea, desaparece después */}
+        {/* WELCOME TO — una sola línea arriba del logo */}
         <div style={{
           position: 'absolute',
           top: '50%',
           left: '50%',
-          transform: 'translate(-50%, -50%)',
+          transform: `translate(-50%, calc(-50% - ${showLogo ? 'clamp(100px, 15vw, 180px)' : '0px'}))`,
           zIndex: 20,
           textAlign: 'center',
-          opacity: showWelcome && !hidWelcome ? 1 : 0,
-          transition: hidWelcome ? 'opacity 0.6s ease' : 'opacity 0.7s ease',
+          opacity: wordIndex >= 0 && !hidWelcome ? 1 : 0,
+          transition: hidWelcome
+            ? 'opacity 0.8s ease'
+            : wordIndex >= 0
+            ? 'opacity 0.7s ease, transform 0.8s cubic-bezier(0.16,1,0.3,1)'
+            : 'none',
           pointerEvents: 'none',
           whiteSpace: 'nowrap',
         }}>
           <p className="welcome-line" style={{
             fontFamily: "'Bebas Neue', sans-serif",
-            fontSize: 'clamp(3rem, 10vw, 8rem)',
-            letterSpacing: '0.06em',
+            fontSize: 'clamp(2.5rem, 8vw, 6rem)',
+            letterSpacing: '0.08em',
             color: '#ffffff',
             lineHeight: 1,
-            animation: showWelcome ? 'welcomeIn 0.7s cubic-bezier(0.16,1,0.3,1) both' : 'none',
+            animation: wordIndex >= 0 ? 'welcomeIn 0.7s cubic-bezier(0.16,1,0.3,1) both' : 'none',
           }}>
             WELCOME TO
           </p>
         </div>
 
-        {/* LOGO — aparece encima del WELCOME TO y se queda */}
+        {/* LOGO */}
         {showLogo && (
           <div style={{
             position: 'relative', zIndex: 10,
@@ -164,7 +163,7 @@ export default function Hero() {
             transform: `scale(${logoScale})`,
             display: 'flex', flexDirection: 'column', alignItems: 'center',
             pointerEvents: logoOpacity < 0.1 ? 'none' : 'all',
-            animation: 'logoIn 0.8s cubic-bezier(0.16,1,0.3,1) both',
+            animation: 'logoIn 0.9s cubic-bezier(0.16,1,0.3,1) both',
           }}>
             <div className={phase === 'done' && progress < 0.1 ? 'logo-float' : ''}>
               <Image
@@ -181,7 +180,7 @@ export default function Hero() {
               />
             </div>
 
-            {/* Texto dorado con efecto scramble */}
+            {/* Texto dorado scramble */}
             <p style={{
               fontSize: 'clamp(0.5rem, 1vw, 0.65rem)',
               letterSpacing: '0.4em',
@@ -191,6 +190,7 @@ export default function Hero() {
               marginBottom: '2.5rem',
               opacity: Math.max(1 - progress * 3, 0),
               fontFamily: "'DM Sans', sans-serif",
+              fontWeight: 700,
             }}>
               <ScrambleText
                 text="GUADALAJARA · MÉXICO · OPENING 2026"
@@ -213,7 +213,7 @@ export default function Hero() {
           </div>
         )}
 
-        {/* Texto inmersivo — aparece al hacer scroll */}
+        {/* Texto inmersivo */}
         <div style={{
           position: 'absolute',
           bottom: '10vh',
