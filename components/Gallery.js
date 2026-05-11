@@ -17,7 +17,7 @@ export default function Gallery() {
             objectFit: 'cover',
           }}
         >
-          <source src="/bg-video.mp4" type="video/mp4" />
+          <source src="/universe-video.mp4" type="video/mp4" />
         </video>
 
         {/* Overlay con texto */}
