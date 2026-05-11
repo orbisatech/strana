@@ -108,10 +108,6 @@ export default function Events() {
           <h3 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 'clamp(3rem, 8vw, 8rem)', lineHeight: 0.9, letterSpacing: '0.02em', color: 'var(--white)', marginBottom: '1.5rem' }}>
             OPENING<br />WEEK
           </h3>
-          <a href="#" style={{ display: 'inline-block', fontSize: '0.7rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--black)', background: 'var(--white)', padding: '0.9rem 2.5rem', textDecoration: 'none', transition: 'background 0.3s' }}
-            onMouseEnter={e => e.target.style.background = 'var(--gold)'}
-            onMouseLeave={e => e.target.style.background = 'var(--white)'}
-          >Get Tickets →</a>
         </div>
       </div>
 
