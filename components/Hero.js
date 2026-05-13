@@ -184,18 +184,17 @@ export default function Hero() {
             animation: 'logoIn 1s cubic-bezier(0.16,1,0.3,1) both',
           }}>
             <div className={phase === 'done' && progress < 0.1 ? 'logo-float' : ''}>
-              <Image
-                src="/logo.png"
-                alt="STRANA"
-                width={400}
-                height={400}
+              <video
+                autoPlay muted loop playsInline
                 style={{
-                  width: 'clamp(140px, 18vw, 260px)',
-                  height: 'auto',
-                  filter: 'drop-shadow(0 0 60px rgba(200,169,110,0.3)) drop-shadow(0 0 120px rgba(200,169,110,0.1))',
-                }}
-                priority
-              />
+                width: 'clamp(140px, 18vw, 260px)',
+                height: 'auto',
+                filter: 'drop-shadow(0 0 60px rgba(200,169,110,0.3)) drop-shadow(0 0 120px rgba(200,169,110,0.1))',
+              }}
+              >
+  <source src="/logo-animated.webm" type="video/webm" />
+  <img src="/logo.png" alt="STRANA" style={{ width: 'clamp(140px, 18vw, 260px)', height: 'auto' }} />
+</video>
             </div>
 
             {/* Texto dorado scramble */}
