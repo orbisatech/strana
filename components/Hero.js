@@ -156,7 +156,7 @@ export default function Hero() {
           zIndex: 20,
           textAlign: 'center',
           opacity: wordIndex >= 0 && !hidWelcome ? 1 : 0,
-          transition: hidWelcome ? 'opacity 0.7s ease' : 'opacity 0.7s ease',
+          transition: 'opacity 0.7s ease',
           pointerEvents: 'none',
           width: '100%',
           padding: '0 24px',
@@ -187,14 +187,15 @@ export default function Hero() {
               <video
                 autoPlay muted loop playsInline
                 style={{
-                width: 'clamp(520px, 72vw, 1040px)',
-                height: 'auto',
-                filter: 'drop-shadow(0 0 60px rgba(200,169,110,0.3)) drop-shadow(0 0 120px rgba(200,169,110,0.1))',
-              }}
+                  width: 'clamp(260px, 36vw, 520px)',
+                  height: 'auto',
+                  filter: 'drop-shadow(0 0 60px rgba(200,169,110,0.3)) drop-shadow(0 0 120px rgba(200,169,110,0.1))',
+                }}
               >
-  <source src="/logo-animated.webm" type="video/webm" />
-  <img src="/logo.png" alt="STRANA" style={{ width: 'clamp(140px, 18vw, 260px)', height: 'auto' }} />
-</video>
+                <source src="/logo-animated-safari.mp4" type="video/mp4; codecs=hvc1" />
+                <source src="/logo-animated.webm" type="video/webm" />
+                <img src="/logo.png" alt="STRANA" style={{ width: 'clamp(260px, 36vw, 520px)', height: 'auto' }} />
+              </video>
             </div>
 
             {/* Texto dorado scramble */}
@@ -234,7 +235,7 @@ export default function Hero() {
         <div className="event-corner" style={{
           opacity: logoOpacity * Math.max(1 - progress * 3, 0),
         }}>
-          <span className="event-corner-date">Upcoming · May 21/22/23  2026</span>
+          <span className="event-corner-date">Upcoming · May 21/22/23 2026</span>
           <span className="event-corner-name">OPENING WEEK</span>
           <span className="event-corner-sub">DJ Alygor · 11 PM – 4 AM</span>
         </div>
@@ -267,7 +268,7 @@ export default function Hero() {
             color: 'var(--gold)',
             textShadow: '0 0 20px rgba(200,169,110,0.6)',
           }}>
-            May 21/22/23     2026
+            May 21/22/23 2026
           </p>
         </div>
 
