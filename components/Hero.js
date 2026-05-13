@@ -2,7 +2,7 @@
 import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
 
-const CHARS = 'ACEGIKMOQSUWY02468·'
+const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789·'
 
 function ScrambleText({ text, trigger, delay = 0 }) {
   const [display, setDisplay] = useState('')
@@ -26,7 +26,7 @@ function ScrambleText({ text, trigger, delay = 0 }) {
           clearInterval(interval)
           setDisplay(text)
         }
-      }, 70)
+      }, 25)
       return () => clearInterval(interval)
     }, delay)
     return () => clearTimeout(timeout)
