@@ -5,7 +5,8 @@ import Image from 'next/image'
 
 function VIPForm() {
   const searchParams = useSearchParams()
-  const cardId = searchParams.get('card') || '001'
+  const rawCard = searchParams.get('card') || '0001'
+const cardId = rawCard.replace(/^0/, '')
 
   const [form, setForm] = useState({ cardNumber: '', nombre: '', telefono: '', fecha: '' })
   const [status, setStatus] = useState('idle') // idle | loading | success | error | registered
