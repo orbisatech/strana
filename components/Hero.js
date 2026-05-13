@@ -187,7 +187,7 @@ export default function Hero() {
               <video
                 autoPlay muted loop playsInline
                 style={{
-                width: 'clamp(260px, 36vw, 520px)',
+                width: 'clamp(520px, 72vw, 1040px)',
                 height: 'auto',
                 filter: 'drop-shadow(0 0 60px rgba(200,169,110,0.3)) drop-shadow(0 0 120px rgba(200,169,110,0.1))',
               }}
