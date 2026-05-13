@@ -2,7 +2,7 @@
 import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
 
-const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789·'
+const CHARS = 'ACEGIKMOQSUWY02468·'
 
 function ScrambleText({ text, trigger, delay = 0 }) {
   const [display, setDisplay] = useState('')
