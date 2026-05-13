@@ -235,7 +235,7 @@ export default function Hero() {
         <div className="event-corner" style={{
           opacity: logoOpacity * Math.max(1 - progress * 3, 0),
         }}>
-          <span className="event-corner-date">Upcoming · May 21 22 23  2026</span>
+          <span className="event-corner-date">Upcoming · May 21/22/23  2026</span>
           <span className="event-corner-name">OPENING WEEK</span>
           <span className="event-corner-sub">DJ Alygor · 11 PM – 4 AM</span>
         </div>
@@ -268,7 +268,7 @@ export default function Hero() {
             color: 'var(--gold)',
             textShadow: '0 0 20px rgba(200,169,110,0.6)',
           }}>
-            May 21 22 23     2026
+            May 21/22/23     2026
           </p>
         </div>
 
