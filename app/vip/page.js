@@ -6,7 +6,7 @@ import Image from 'next/image'
 function VIPForm() {
   const searchParams = useSearchParams()
   const rawCard = searchParams.get('card') || '0001'
-const cardId = rawCard.replace(/^0/, '')
+  const cardId = rawCard.replace(/^0/, '')
 
   const [form, setForm] = useState({ cardNumber: '', nombre: '', telefono: '', fecha: '' })
   const [status, setStatus] = useState('idle') // idle | loading | success | error | registered
@@ -18,7 +18,9 @@ const cardId = rawCard.replace(/^0/, '')
       try {
         const res = await fetch('/api/vip')
         const json = await res.json()
-        const found = (json.data || []).find(r => r.tarjeta === cardId)
+        const found = (json.data || []).find(r => 
+        String(r.tarjeta) === String(parseInt(rawCard, 10))
+)
         if (found) {
           setProfile(found)
           setStatus('registered')
