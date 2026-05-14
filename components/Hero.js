@@ -44,6 +44,17 @@ export default function Hero() {
   const [hidWelcome, setHidWelcome] = useState(false)
   const [videoOpacity, setVideoOpacity] = useState(0)
   const [scrambleTrigger, setScrambleTrigger] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    // Detectar si es móvil/Safari iOS
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768 || /iPhone|iPad|iPod/i.test(navigator.userAgent))
+    }
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
   useEffect(() => {
     const t1 = setTimeout(() => setWordIndex(0), 400)
@@ -65,6 +76,12 @@ export default function Hero() {
   const progress = Math.min(scrollY / (vh * 0.8), 1)
   const logoOpacity = Math.max(1 - progress * 2, 0)
   const logoScale = 1 - progress * 0.08
+
+  const logoStyle = {
+    width: 'clamp(260px, 36vw, 520px)',
+    height: 'auto',
+    filter: 'drop-shadow(0 0 60px rgba(200,169,110,0.3)) drop-shadow(0 0 120px rgba(200,169,110,0.1))',
+  }
 
   return (
     <section ref={sectionRef} style={{ position: 'relative', height: '200vh', background: '#080808' }}>
@@ -184,18 +201,27 @@ export default function Hero() {
             animation: 'logoIn 1s cubic-bezier(0.16,1,0.3,1) both',
           }}>
             <div className={phase === 'done' && progress < 0.1 ? 'logo-float' : ''}>
-              <video
-                autoPlay muted loop playsInline
-                style={{
-                  width: 'clamp(520px, 72vw, 1040px)',
-                  height: 'auto',
-                  filter: 'drop-shadow(0 0 60px rgba(200,169,110,0.3)) drop-shadow(0 0 120px rgba(200,169,110,0.1))',
-                }}
-              >
-                <source src="/logo-animated-safari.mp4" type="video/mp4; codecs=hvc1" />
-                <source src="/logo-animated.webm" type="video/webm" />
-                <img src="/logo.png" alt="STRANA" style={{ width: 'clamp(260px, 36vw, 520px)', height: 'auto' }} />
-              </video>
+              {isMobile ? (
+                // En móvil: imagen estática
+                <Image
+                  src="/logo.png"
+                  alt="STRANA"
+                  width={520}
+                  height={520}
+                  style={logoStyle}
+                  priority
+                />
+              ) : (
+                // En desktop: video animado
+                <video
+                  autoPlay muted loop playsInline
+                  style={logoStyle}
+                >
+                  <source src="/logo-animated-safari.mp4" type="video/mp4; codecs=hvc1" />
+                  <source src="/logo-animated.webm" type="video/webm" />
+                  <img src="/logo.png" alt="STRANA" style={logoStyle} />
+                </video>
+              )}
             </div>
 
             {/* Texto dorado scramble */}
