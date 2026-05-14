@@ -1,5 +1,4 @@
 'use client'
-import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
 
 const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789·'
@@ -44,17 +43,6 @@ export default function Hero() {
   const [hidWelcome, setHidWelcome] = useState(false)
   const [videoOpacity, setVideoOpacity] = useState(0)
   const [scrambleTrigger, setScrambleTrigger] = useState(false)
-  const [isMobile, setIsMobile] = useState(false)
-
-  useEffect(() => {
-    // Detectar si es móvil/Safari iOS
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768 || /iPhone|iPad|iPod/i.test(navigator.userAgent))
-    }
-    checkMobile()
-    window.addEventListener('resize', checkMobile)
-    return () => window.removeEventListener('resize', checkMobile)
-  }, [])
 
   useEffect(() => {
     const t1 = setTimeout(() => setWordIndex(0), 400)
@@ -77,12 +65,6 @@ export default function Hero() {
   const logoOpacity = Math.max(1 - progress * 2, 0)
   const logoScale = 1 - progress * 0.08
 
-  const logoStyle = {
-    width: 'clamp(260px, 36vw, 520px)',
-    height: 'auto',
-    filter: 'drop-shadow(0 0 60px rgba(200,169,110,0.3)) drop-shadow(0 0 120px rgba(200,169,110,0.1))',
-  }
-
   return (
     <section ref={sectionRef} style={{ position: 'relative', height: '200vh', background: '#080808' }}>
       <style>{`
@@ -103,6 +85,11 @@ export default function Hero() {
           to   { opacity: 1; transform: translateX(0); }
         }
         .logo-float { animation: floatY 5s ease-in-out infinite; }
+        .logo-img {
+          width: clamp(280px, 42vw, 680px);
+          height: auto;
+          filter: drop-shadow(0 0 60px rgba(200,169,110,0.3)) drop-shadow(0 0 120px rgba(200,169,110,0.1));
+        }
         .event-corner {
           position: absolute; bottom: 56px; right: 44px;
           display: flex; flex-direction: column; align-items: flex-end; gap: 4px;
@@ -125,6 +112,7 @@ export default function Hero() {
           color: var(--gold);
         }
         @media (max-width: 768px) {
+          .logo-img { width: clamp(240px, 75vw, 380px) !important; }
           .event-corner { display: none !important; }
           .immersive-text { font-size: 0.55rem !important; white-space: normal !important; padding: 0 24px; }
           .immersive-date { font-size: 0.42rem !important; }
@@ -201,27 +189,12 @@ export default function Hero() {
             animation: 'logoIn 1s cubic-bezier(0.16,1,0.3,1) both',
           }}>
             <div className={phase === 'done' && progress < 0.1 ? 'logo-float' : ''}>
-              {isMobile ? (
-                // En móvil: imagen estática
-                <Image
-                  src="/logo.png"
-                  alt="STRANA"
-                  width={520}
-                  height={520}
-                  style={logoStyle}
-                  priority
-                />
-              ) : (
-                // En desktop: video animado
-                <video
-                  autoPlay muted loop playsInline
-                  style={logoStyle}
-                >
-                  <source src="/logo-animated-safari.mp4" type="video/mp4; codecs=hvc1" />
-                  <source src="/logo-animated.webm" type="video/webm" />
-                  <img src="/logo.png" alt="STRANA" style={logoStyle} />
-                </video>
-              )}
+              {/* APNG funciona en todos los dispositivos con transparencia */}
+              <img
+                src="/logo-animated.apng"
+                alt="STRANA"
+                className="logo-img"
+              />
             </div>
 
             {/* Texto dorado scramble */}
