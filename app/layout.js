@@ -5,9 +5,9 @@ export const metadata = {
   title: 'STRANA GDL — El Universo de la Noche',
   description: 'El venue más avanzado de Guadalajara. Experiencias que no se olvidan.',
   icons: {
-    icon: '/logo.png',
-    apple: '/logo.png',
-  },
+  icon: '/LogoStrana.png',
+  apple: '/LogoStrana.png',
+},
   openGraph: {
     title: 'STRANA GDL',
     description: 'El venue más avanzado de Guadalajara.',
