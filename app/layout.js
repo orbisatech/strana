@@ -1,4 +1,5 @@
 import './globals.css'
+import StructuredData from './structured-data'
 
 export const metadata = {
   title: 'STRANA GDL — El Universo de la Noche',
@@ -26,6 +27,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="es">
       <body>
+        <StructuredData />
         <div id="cursor" />
         {children}
       </body>
