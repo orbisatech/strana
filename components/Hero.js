@@ -112,7 +112,7 @@ export default function Hero() {
           color: var(--gold);
         }
         @media (max-width: 768px) {
-          .logo-img { width: clamp(240px, 75vw, 380px) !important; }
+          .logo-img { width: clamp(480px, 150vw, 760px) !important; }
           .event-corner { display: none !important; }
           .immersive-text { font-size: 0.55rem !important; white-space: normal !important; padding: 0 24px; }
           .immersive-date { font-size: 0.42rem !important; }
