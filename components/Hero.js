@@ -86,7 +86,7 @@ export default function Hero() {
         }
         .logo-float { animation: floatY 5s ease-in-out infinite; }
         .logo-img {
-          width: clamp(280px, 42vw, 680px);
+          width: clamp(560px, 84vw, 1360px);
           height: auto;
           filter: drop-shadow(0 0 60px rgba(200,169,110,0.3)) drop-shadow(0 0 120px rgba(200,169,110,0.1));
         }
