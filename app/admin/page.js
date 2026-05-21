@@ -42,7 +42,16 @@ export default function AdminPage() {
   )
 
   const formatDate = (iso) => new Date(iso).toLocaleString('es-MX', { dateStyle: 'short', timeStyle: 'short' })
-  const formatBirth = (d) => d ? new Date(d + 'T12:00:00').toLocaleDateString('es-MX') : '—'
+  const formatBirth = (d) => {
+  if (!d) return '—'
+  // Maneja formato DD/MM/YYYY
+  const parts = d.split('/')
+  if (parts.length === 3) {
+    const [day, month, year] = parts
+    return new Date(`${year}-${month.padStart(2,'0')}-${day.padStart(2,'0')}T12:00:00`).toLocaleDateString('es-MX')
+  }
+  return new Date(d + 'T12:00:00').toLocaleDateString('es-MX')
+}
 
   if (!auth) return (
     <div style={{ minHeight: '100vh', background: 'var(--black)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}>
