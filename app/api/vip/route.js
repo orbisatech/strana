@@ -15,7 +15,7 @@ export async function GET() {
     const sheets = google.sheets({ version: 'v4', auth })
     const res = await sheets.spreadsheets.values.get({
       spreadsheetId: process.env.GOOGLE_SHEET_ID,
-      range: 'Hoja 1!A2:E',
+      range: 'usuarios!A2:E',
     })
 
     const rows = res.data.values || []
